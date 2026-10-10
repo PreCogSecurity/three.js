@@ -23,7 +23,28 @@ THREE.WebGLShader = ( function () {
 
 		if ( gl.getShaderParameter( shader, gl.COMPILE_STATUS ) === false ) {
 
-			console.error( 'THREE.WebGLShader: Shader couldn\'t compile.' );
+			var stage = ( type === gl.VERTEX_SHADER ) ? 'vertex' : 'fragment';
+			var infoLog = gl.getShaderInfoLog( shader );
+
+			console.error( 'THREE.WebGLShader: ' + stage + ' shader couldn\'t compile.' );
+
+			if ( infoLog !== '' ) {
+
+				console.warn( 'THREE.WebGLShader: gl.getShaderInfoLog()', stage, infoLog, addLineNumbers( string ) );
+
+			}
+
+			// Continuing past this point yields a program that can never link,
+			// so surface a coded error with the full diagnostics attached.
+			throw new THREE.ThreeError(
+				'THREE.WebGLShader: ' + stage + ' shader failed to compile.',
+				THREE.ThreeError.CODES.SHADER_COMPILE_FAILED,
+				{
+					stage: stage,
+					infoLog: infoLog,
+					source: addLineNumbers( string )
+				}
+			);
 
 		}
 

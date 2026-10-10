@@ -3,6 +3,9 @@
 // Performs deep comparison.
 // Comparison stops after the first difference is found.
 // Provides an explanation for the failure.
+
+/* exported SmartComparer */
+
 function SmartComparer() {
 	'use strict';
 

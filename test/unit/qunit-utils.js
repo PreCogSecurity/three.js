@@ -182,9 +182,14 @@ function checkLightClone( light ) {
 }
 
 // Compare json file with its source Light.
-function checkLightJsonWriting( light, json ) {
+//
+// `Object3D.toJSON()` returns the outer document -- `metadata`, `geometries`,
+// `materials`, ... -- with the serialised object nested under `.object`. The
+// `type` / `uuid` / `id` assertions below are about the inner object, but
+// `metadata` only exists on the outer one, so it has to be passed separately.
+function checkLightJsonWriting( light, json, metadata ) {
 
-	QUnit.assert.equal( json.metadata.version, "4.4", "check metadata version" );
+	QUnit.assert.equal( metadata.version, "4.4", "check metadata version" );
 	QUnit.assert.equalKey( light, json, 'type' );
 	QUnit.assert.equalKey( light, json, 'uuid' );
 	QUnit.assert.equal( json.id, undefined, "should not persist id" );
@@ -205,7 +210,7 @@ function checkLightJsonReading( json, light ) {
 function checkLightJsonRoundtrip( light ) {
 
 	var json = light.toJSON();
-	checkLightJsonWriting( light, json.object );
+	checkLightJsonWriting( light, json.object, json.metadata );
 	checkLightJsonReading( json, light );
 
 }

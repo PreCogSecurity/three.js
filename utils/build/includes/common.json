@@ -1,5 +1,6 @@
 [
 	"src/Three.js",
+	"src/core/ThreeError.js",
 	"src/math/Color.js",
 	"src/math/Quaternion.js",
 	"src/math/Vector2.js",
@@ -18,6 +19,7 @@
 	"src/math/Math.js",
 	"src/math/Spline.js",
 	"src/math/Triangle.js",
+	"src/core/ThreeError.js",
 	"src/core/Channels.js",
 	"src/core/Clock.js",
 	"src/core/EventDispatcher.js",

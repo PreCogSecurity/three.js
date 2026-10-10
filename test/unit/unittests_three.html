@@ -7,7 +7,13 @@
 </head>
 <body>
   <div id="qunit"></div>
-  <script src="../../node_modules/lodash/index.js"></script>
+  <!--
+    `lodash-shim.js` implements exactly the lodash helpers the specs use. The
+    suite used to load `../../node_modules/lodash/index.js`, which meant the
+    browser harness could only run after `npm install` -- it now runs straight
+    from a fresh clone, same as `npm test`.
+  -->
+  <script src="lodash-shim.js"></script>
   <script src="qunit-1.18.0.js"></script>
   <script src="qunit-utils.js"></script>
   <script src="SmartComparer.js"></script>
@@ -15,6 +21,11 @@
   <!-- add sources to test below -->
 
   <script src="../../build/three.js"></script>
+
+  <!-- shared fixtures ( x, y, z, w, zero3, one3, ... ) used by the math specs.
+       This file was previously never loaded, so every spec that referenced
+       those globals failed with "x is not defined". -->
+  <script src="math/Constants.js"></script>
 
   <!-- add class-based unit tests below -->
 

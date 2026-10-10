@@ -126,7 +126,7 @@ THREE.CatmullRomCurve3 = ( function() {
 
 			if ( intPoint + 2 < l ) {
 
-				p3 = points[ intPoint + 2 ]
+				p3 = points[ intPoint + 2 ];
 
 			} else {
 

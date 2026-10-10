@@ -2,6 +2,8 @@
  * @author bhouston / http://exocortex.com
  */
 
+/* exported x, y, z, w, negInf2, posInf2, zero2, one2, two2, negInf3, posInf3, zero3, one3, two3 */
+
 var x = 2;
 var y = 3;
 var z = 4;

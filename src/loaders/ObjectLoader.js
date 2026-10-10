@@ -47,6 +47,22 @@ THREE.ObjectLoader.prototype = {
 
 	parse: function ( json, onLoad ) {
 
+		// `parse` is routinely handed the direct result of `JSON.parse()` on a
+		// model file downloaded from a CDN, a user upload or a third party scene
+		// package. Any of those can be a truncated download, an HTML error page
+		// or a hand crafted payload. Previously a non-object simply produced a
+		// bare `TypeError: Cannot read properties of null` that said nothing
+		// about which file was at fault; reject it up front with a coded error
+		// the host application can actually branch on.
+		if ( json === null || typeof json !== 'object' || Array.isArray( json ) ) {
+
+			throw new THREE.ThreeError(
+				'THREE.ObjectLoader: expected a JSON object, received ' + ( json === null ? 'null' : Array.isArray( json ) ? 'an array' : typeof json ) + '.',
+				THREE.ThreeError.CODES.INVALID_JSON
+			);
+
+		}
+
 		var geometries = this.parseGeometries( json.geometries );
 
 		var images = this.parseImages( json.images, function () {
@@ -78,7 +94,14 @@ THREE.ObjectLoader.prototype = {
 
 	parseGeometries: function ( json ) {
 
-		var geometries = {};
+		// Prototype-less on purpose. These maps are keyed by attacker controlled
+		// strings taken straight out of the model file, and they are read back
+		// with a plain `map[ uuid ]`. On a normal `{}` a model asking for the
+		// geometry `"constructor"` resolves to the inherited `Object`
+		// constructor, and `new THREE.Mesh( Object )` silently produced a mesh
+		// whose "geometry" was a function. `Object.create( null )` removes the
+		// inherited members so an unknown uuid is an honest miss.
+		var geometries = Object.create( null );
 
 		if ( json !== undefined ) {
 
@@ -294,7 +317,7 @@ THREE.ObjectLoader.prototype = {
 
 	parseMaterials: function ( json, textures ) {
 
-		var materials = {};
+		var materials = Object.create( null );
 
 		if ( json !== undefined ) {
 
@@ -333,7 +356,7 @@ THREE.ObjectLoader.prototype = {
 	parseImages: function ( json, onLoad ) {
 
 		var scope = this;
-		var images = {};
+		var images = Object.create( null );
 
 		function loadImage( url ) {
 
@@ -381,7 +404,7 @@ THREE.ObjectLoader.prototype = {
 
 		}
 
-		var textures = {};
+		var textures = Object.create( null );
 
 		if ( json !== undefined ) {
 
@@ -435,6 +458,12 @@ THREE.ObjectLoader.prototype = {
 		var matrix = new THREE.Matrix4();
 
 		return function ( data, geometries, materials ) {
+
+			if ( data === null || typeof data !== 'object' ) {
+
+				throw new THREE.ThreeError( 'THREE.ObjectLoader.parseObject: expected an object description.', THREE.ThreeError.CODES.UNSUPPORTED_OBJECT_TYPE );
+
+			}
 
 			var object;
 
@@ -581,9 +610,29 @@ THREE.ObjectLoader.prototype = {
 
 			if ( data.children !== undefined ) {
 
-				for ( var child in data.children ) {
+				// Iterate own properties only. A `for...in` loop also walks the
+				// prototype chain, so a polluted `Object.prototype` (or any other
+				// inherited enumerable property) would inject children into the
+				// scene graph of a model parsed from untrusted JSON.
+				var children = data.children;
 
-					object.add( this.parseObject( data.children[ child ], geometries, materials ) );
+				if ( Object.prototype.toString.call( children ) === '[object Array]' ) {
+
+					for ( var i = 0, l = children.length; i < l; i ++ ) {
+
+						object.add( this.parseObject( children[ i ], geometries, materials ) );
+
+					}
+
+				} else if ( children !== null && typeof children === 'object' ) {
+
+					var childKeys = Object.keys( children );
+
+					for ( var c = 0, cl = childKeys.length; c < cl; c ++ ) {
+
+						object.add( this.parseObject( children[ childKeys[ c ] ], geometries, materials ) );
+
+					}
 
 				}
 
@@ -610,7 +659,7 @@ THREE.ObjectLoader.prototype = {
 
 			return object;
 
-		}
+		};
 
 	}()
 

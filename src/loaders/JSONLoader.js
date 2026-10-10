@@ -90,6 +90,19 @@ THREE.JSONLoader.prototype = {
 
 	parse: function ( json, texturePath ) {
 
+		// Model files are untrusted input. `json.scale` below would otherwise
+		// throw a bare `TypeError` on `null` / `undefined` and a
+		// `vertices.length` TypeError further down for a structurally invalid
+		// document, neither of which identifies the offending asset.
+		if ( json === null || typeof json !== 'object' || Array.isArray( json ) ) {
+
+			throw new THREE.ThreeError(
+				'THREE.JSONLoader.parse: expected a parsed JSON object, received ' + ( json === null ? 'null' : Array.isArray( json ) ? 'an array' : typeof json ) + '.',
+				THREE.ThreeError.CODES.INVALID_JSON
+			);
+
+		}
+
 		var geometry = new THREE.Geometry(),
 		scale = ( json.scale !== undefined ) ? 1.0 / json.scale : 1.0;
 

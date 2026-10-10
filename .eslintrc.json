@@ -1,0 +1,133 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "script"
+	},
+	"globals": {
+		"THREE": "readonly"
+	},
+	"rules": {
+
+		"no-undef": "error",
+		"no-unused-vars": [ "error", { "vars": "all", "args": "none" } ],
+
+		// `no-redeclare` is intentionally off: the ES3 sources reuse `var i`,
+		// `var l`, ... across sibling blocks inside the same function, which is
+		// harmless (and idiomatic for this code base) but would otherwise
+		// produce ~190 findings that hide the rules that matter.
+		"no-redeclare": "off",
+		"no-dupe-keys": "error",
+		"no-dupe-args": "error",
+		"no-duplicate-case": "error",
+		"no-unreachable": "error",
+		"no-constant-condition": "error",
+		"no-cond-assign": [ "error", "except-parens" ],
+		"no-compare-neg-zero": "error",
+		"no-sparse-arrays": "error",
+		"no-self-assign": "error",
+		"no-func-assign": "error",
+		"no-global-assign": "error",
+		"no-fallthrough": "error",
+		"use-isnan": "error",
+		"valid-typeof": "error",
+		"no-setter-return": "error",
+		"no-unsafe-negation": "error",
+		"no-unmodified-loop-condition": "error",
+		"no-obj-calls": "error",
+		"no-array-constructor": "error",
+		"no-control-regex": "error",
+		"no-empty-character-class": "error",
+		"no-invalid-regexp": "error",
+		"no-useless-escape": "error",
+		"no-useless-catch": "error",
+
+		"no-throw-literal": "error",
+		"no-eval": "error",
+		"no-implied-eval": "error",
+		"no-new-func": "error",
+		"no-script-url": "error",
+		"no-caller": "error",
+		"no-with": "error",
+		"no-proto": "error",
+		"no-prototype-builtins": "error",
+		"no-extend-native": "error",
+		"no-shadow-restricted-names": "error",
+		"no-label-var": "error",
+		"no-delete-var": "error",
+		"no-const-assign": "error",
+
+		"no-console": "off",
+		"semi": [ "error", "always" ],
+		"no-var": "off",
+		"prefer-const": "off"
+	},
+	"overrides": [
+		{
+			"files": [ "test/unit/**/*.js" ],
+			"env": {
+				"browser": true,
+				"es6": true,
+				"qunit": true
+			},
+			"globals": {
+				"_": "readonly",
+				"global": "readonly",
+				"SmartComparer": "readonly",
+
+				"checkFinite": "readonly",
+				"checkGeometryClone": "readonly",
+				"checkGeometryJsonWriting": "readonly",
+				"checkGeometryJsonReading": "readonly",
+				"checkGeometryJsonRoundtrip": "readonly",
+				"runStdGeometryTests": "readonly",
+				"checkLightClone": "readonly",
+				"checkLightJsonWriting": "readonly",
+				"checkLightJsonReading": "readonly",
+				"checkLightJsonRoundtrip": "readonly",
+				"runStdLightTests": "readonly",
+
+				"x": "readonly",
+				"y": "readonly",
+				"z": "readonly",
+				"w": "readonly",
+				"negInf2": "readonly",
+				"posInf2": "readonly",
+				"zero2": "readonly",
+				"one2": "readonly",
+				"two2": "readonly",
+				"negInf3": "readonly",
+				"posInf3": "readonly",
+				"zero3": "readonly",
+				"one3": "readonly",
+				"two3": "readonly"
+			}
+		},
+		{
+			"files": [ "test/node/**/*.js" ],
+			"env": {
+				"node": true,
+				"browser": true,
+				"es6": true
+			}
+		},
+		{
+			"files": [ "utils/**/*.js" ],
+			"env": {
+				"node": true,
+				"es6": true
+			}
+		},
+		{
+			"files": [ "src/Three.js" ],
+			"env": {
+				"amd": true,
+				"commonjs": true
+			}
+		}
+	]
+}

@@ -76,6 +76,17 @@ THREE.BufferGeometry.prototype = {
 
 	getAttribute: function ( name ) {
 
+		// `addAttribute()` redirects the reserved name "index" to `setIndex()`,
+		// which stores it on `this.index` rather than in `this.attributes`.
+		// Reading it back through the `attributes` hash therefore silently
+		// returned `undefined`, so `addAttribute()` / `getAttribute()` were not
+		// symmetric for the one attribute name every indexed geometry has.
+		if ( name === 'index' ) {
+
+			return ( this.index !== null && this.index !== undefined ) ? this.index : undefined;
+
+		}
+
 		return this.attributes[ name ];
 
 	},
@@ -826,7 +837,7 @@ THREE.BufferGeometry.prototype = {
 
 	computeOffsets: function ( size ) {
 
-		console.warn( 'THREE.BufferGeometry: .computeOffsets() has been removed.')
+		console.warn( 'THREE.BufferGeometry: .computeOffsets() has been removed.');
 
 	},
 

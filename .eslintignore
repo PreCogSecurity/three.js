@@ -1,0 +1,31 @@
+# Vendored / generated artefacts -------------------------------------------------
+build/
+docs/
+node_modules/
+.bower_components/
+
+# Third-party code that ships inside the editor and the examples. These files
+# are not maintained here, are not subject to this project's style, and would
+# drown out real findings.
+editor/js/libs/
+examples/js/libs/
+examples/js/loaders/ctm/
+examples/js/loaders/gltf/
+examples/js/loaders/sea3d/
+examples/files/
+examples/fonts/
+examples/models/
+examples/obj/
+examples/scenes/
+examples/sounds/
+examples/textures/
+
+# Python / C# / MaxScript tooling and compiled helpers ----------------------------
+utils/exporters/
+utils/converters/
+
+# The vendored QUnit distribution used by the browser harnesses ---------------
+test/unit/qunit-1.18.0.js
+
+# Benchmark and manual harnesses -------------------------------------------------
+test/benchmark/

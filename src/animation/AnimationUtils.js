@@ -10,7 +10,7 @@ THREE.AnimationUtils = {
 		if ( exemplarValue.equals ) {
 			return function equals_object( a, b ) {
 				return a.equals( b );
-			}
+			};
 		}
 
 		return function equals_primitive( a, b ) {

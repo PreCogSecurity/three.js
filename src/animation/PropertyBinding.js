@@ -191,7 +191,7 @@ THREE.PropertyBinding.prototype = {
 					return true;
 				}
 				return false;
-			}
+			};
 
 			this.getValue = function getValue_propertyObject() {
 				return nodeProperty;
@@ -207,7 +207,7 @@ THREE.PropertyBinding.prototype = {
 					return true;
 				}
 				return false;
-			}
+			};
 
 			this.getValue = function getValue_property() {
 				return targetObject[ this.propertyName ];
@@ -220,13 +220,13 @@ THREE.PropertyBinding.prototype = {
 
 			this.triggerDirty = function triggerDirty_needsUpdate() {
 				this.node.needsUpdate = true;
-			}
+			};
 
 		} else if ( targetObject.matrixWorldNeedsUpdate !== undefined ) { // node transform
 
 			this.triggerDirty = function triggerDirty_matrixWorldNeedsUpdate() {
 				targetObject.matrixWorldNeedsUpdate = true;
-			}
+			};
 
 		}
 
@@ -285,6 +285,11 @@ THREE.PropertyBinding.parseTrackName = function( trackName ) {
 	//	  .bone[Armature.DEF_cog].position
 	// created and tested via https://regex101.com/#javascript
 
+	//
+	// NOTE: the `[`, `]` and `_` escapes inside the character classes are kept on
+	// purpose: some legacy engines treat an unescaped `[` inside a class as the
+	// start of a nested class.
+	// eslint-disable-next-line no-useless-escape
 	var re = /^(([\w]+\/)*)([\w-\d]+)?(\.([\w]+)(\[([\w\d\[\]\_. ]+)\])?)?(\.([\w.]+)(\[([\w\d\[\]\_. ]+)\])?)$/;
 	var matches = re.exec(trackName);
 
@@ -292,9 +297,9 @@ THREE.PropertyBinding.parseTrackName = function( trackName ) {
 		throw new Error( "cannot parse trackName at all: " + trackName );
 	}
 
-    if (matches.index === re.lastIndex) {
-        re.lastIndex++;
-    }
+	// NOTE: this deliberately does not touch `re.lastIndex`. `re` is rebuilt on
+	// every call and carries no `g` / `y` flag, so `lastIndex` is never read by
+	// `exec()` and writing to it had no effect.
 
 	var results = {
 		directoryName: matches[1],
@@ -388,4 +393,4 @@ THREE.PropertyBinding.findNode = function( root, nodeName ) {
 	}
 
 	return null;
-}
+};

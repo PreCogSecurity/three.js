@@ -37,7 +37,6 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 
 	var scope = this,
 
-		tangent,
 		normal,
 		binormal,
 
@@ -78,7 +77,6 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed, 
 
 		pos = path.getPointAt( u );
 
-		tangent = tangents[ i ];
 		normal = normals[ i ];
 		binormal = binormals[ i ];
 
