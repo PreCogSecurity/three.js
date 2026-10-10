@@ -120,7 +120,7 @@ THREE.Color.prototype = {
 
 		var m;
 
-		if ( m = /^((?:rgb|hsl)a?)\(\s*([^\)]*)\)/.exec( style ) ) {
+		if ( ( m = /^((?:rgb|hsl)a?)\(\s*([^)]*)\)/.exec( style ) ) ) {
 
 			// rgb / hsl
 
@@ -133,7 +133,7 @@ THREE.Color.prototype = {
 				case 'rgb':
 				case 'rgba':
 
-					if ( color = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec( components ) ) {
+					if ( ( color = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec( components ) ) ) {
 
 						// rgb(255,0,0) rgba(255,0,0,0.5)
 						this.r = Math.min( 255, parseInt( color[ 1 ], 10 ) ) / 255;
@@ -146,7 +146,7 @@ THREE.Color.prototype = {
 
 					}
 
-					if ( color = /^(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec( components ) ) {
+					if ( ( color = /^(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec( components ) ) ) {
 
 						// rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
 						this.r = Math.min( 100, parseInt( color[ 1 ], 10 ) ) / 100;
@@ -164,7 +164,7 @@ THREE.Color.prototype = {
 				case 'hsl':
 				case 'hsla':
 
-					if ( color = /^([0-9]*\.?[0-9]+)\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec( components ) ) {
+					if ( ( color = /^([0-9]*\.?[0-9]+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec( components ) ) ) {
 
 						// hsl(120,50%,50%) hsla(120,50%,50%,0.5)
 						var h = parseFloat( color[ 1 ] ) / 360;
@@ -181,7 +181,7 @@ THREE.Color.prototype = {
 
 			}
 
-		} else if ( m = /^\#([A-Fa-f0-9]+)$/.exec( style ) ) {
+		} else if ( ( m = /^#([A-Fa-f0-9]+)$/.exec( style ) ) ) {
 
 			// hex color
 

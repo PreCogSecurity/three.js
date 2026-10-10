@@ -9,7 +9,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/node/run.js",
+    "lint": "eslint src test/node",
+    "lint:fix": "eslint src test/node --fix"
+  },
+  "engines": {
+    "node": ">=12"
   },
   "repository": {
     "type": "git",
@@ -28,7 +33,6 @@
   },
   "homepage": "http://threejs.org/",
   "devDependencies": {
-    "jscs": "^1.13.1",
-    "lodash": "^3.10.0"
+    "eslint": "^8.57.1"
   }
 }

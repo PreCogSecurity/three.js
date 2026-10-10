@@ -48,7 +48,7 @@ THREE.ArrowHelper = ( function () {
 		this.setDirection( dir );
 		this.setLength( length, headLength, headWidth );
 
-	}
+	};
 
 }() );
 

@@ -66,3 +66,90 @@ If everything went well you should see [this](http://jsfiddle.net/f17Lz5ux/).
 ### Change log ###
 
 [releases](https://github.com/mrdoob/three.js/releases)
+
+### Installing from source ###
+
+three.js has **no runtime dependencies** — `src/` is plain ES3/ES5 JavaScript
+and `build/three.js` is a self-contained bundle. Cloning and using the library
+requires nothing but the source tree.
+
+```bash
+git clone https://github.com/mrdoob/three.js.git
+```
+
+### Building, testing and linting ###
+
+Development tooling (Node.js only) is declared in `package.json` and pinned by
+`package-lock.json`. A Node LTS release is expected; `.nvmrc` records the
+version used by CI.
+
+```bash
+nvm use        # optional: honours .nvmrc
+npm ci         # reproducible install (no lockfile drift, no global tools)
+
+npm test       # head-less unit suite -- runs every spec under test/unit/
+npm run lint   # ESLint over src/ and test/node/
+```
+
+`npm test` runs the QUnit specs inside a sandboxed Node context (`test/node/`)
+against the sources in `src/`. It needs no browser, no headless Chrome and no
+network access, and it exits non-zero as soon as an assertion fails.
+
+```bash
+node test/node/run.js --filter=math   # run a subset
+```
+
+Both commands are enforced on every push and pull request by
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml), which also runs the
+suite on every supported Node LTS line and gates on `npm audit`. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for the full development workflow and for how
+to add a spec.
+
+### Repository layout ###
+
+| Path | Contents |
+| --- | --- |
+| `src/` | Library source. This is what `npm test` and CI exercise. |
+| `build/` | Generated bundles (`three.js`, `three.min.js`), produced by `utils/build/build.py` at release time. |
+| `test/unit/` | QUnit specs plus the browser harnesses `unittests_*.html`. New specs are auto-discovered. |
+| `test/node/` | Dependency-free head-less runner used by `npm test`. |
+| `examples/` | Example scenes and the vendored example-only libraries. |
+| `editor/` | The web editor, including its vendored CodeMirror/Tern bundles. |
+| `docs/` | Generated API documentation. |
+| `utils/` | Build, export and converter tooling. Not shipped to browsers. |
+
+Vendored third-party bundles (CodeMirror, Tern, esprima, acorn, the Collada and
+CTM loaders, ...) live under `editor/js/libs/` and `examples/js/libs/`. They are
+third-party code, are excluded from linting via `.eslintignore`, and are not
+maintained here.
+
+### Error handling ###
+
+Fatal conditions raise `THREE.ThreeError`, a real `Error` carrying a stable,
+machine-readable `code`:
+
+```js
+try {
+
+    renderer = new THREE.WebGLRenderer();
+
+} catch ( error ) {
+
+    if ( error instanceof THREE.ThreeError && error.code === THREE.ThreeError.CODES.CONTEXT_CREATION_FAILED ) {
+
+        // fall back to a software renderer, show a message, ...
+
+    }
+
+    throw error;
+
+}
+```
+
+The available codes are listed in `THREE.ThreeError.CODES`
+(`src/core/ThreeError.js`). Match on `code`, never on the human readable
+`message`, which may change between releases.
+
+### Security ###
+
+Please read [SECURITY.md](SECURITY.md) before reporting a vulnerability.

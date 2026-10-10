@@ -69,6 +69,6 @@ THREE.BoxHelper.prototype.update = ( function () {
 
 		this.geometry.computeBoundingSphere();
 
-	}
+	};
 
 } )();

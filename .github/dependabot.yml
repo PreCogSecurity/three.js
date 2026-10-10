@@ -1,0 +1,34 @@
+# Keeps the build/test toolchain current and surfaces known vulnerabilities in
+# npm dependencies before they reach a release.
+version: 2
+
+updates:
+
+  # The repository has a committed package-lock.json, so Dependabot can propose
+  # exact, reproducible upgrades for the whole dependency tree.
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+    labels:
+      - 'dependencies'
+      - 'automation'
+    groups:
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - 'eslint-*'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    commit-message:
+      prefix: 'chore(ci)'
+    labels:
+      - 'dependencies'
+      - 'automation'

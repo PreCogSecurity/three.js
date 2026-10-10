@@ -29,6 +29,11 @@ THREE.LightShadow.prototype = {
 
 		this.mapSize.copy( source.mapSize );
 
+		// `map` and `matrix` are render targets and are intentionally not shared
+		// with the source.
+
+		return this;
+
 	},
 
 	clone: function () {

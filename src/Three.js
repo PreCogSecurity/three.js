@@ -84,7 +84,7 @@ if ( self.performance.now === undefined ) {
 
 			return Date.now() - start;
 
-		}
+		};
 
 	} )();
 
@@ -117,6 +117,9 @@ if ( Function.prototype.name === undefined && Object.defineProperty !== undefine
 	// Missing in IE9-11.
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
 
+	// Guarded polyfill for a read-only, built-in property: it only ever runs on
+	// engines that do not implement it at all.
+	// eslint-disable-next-line no-extend-native
 	Object.defineProperty( Function.prototype, 'name', {
 
 		get: function () {

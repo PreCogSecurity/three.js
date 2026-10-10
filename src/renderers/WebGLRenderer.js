@@ -7,8 +7,6 @@
 
 THREE.WebGLRenderer = function ( parameters ) {
 
-	console.log( 'THREE.WebGLRenderer', THREE.REVISION );
-
 	parameters = parameters || {};
 
 	var _canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElement( 'canvas' ),
@@ -166,15 +164,23 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		if ( _gl === null ) {
 
+			var message;
+
 			if ( _canvas.getContext( 'webgl' ) !== null ) {
 
-				throw 'Error creating WebGL context with your selected attributes.';
+				message = 'Error creating WebGL context with your selected attributes.';
 
 			} else {
 
-				throw 'Error creating WebGL context.';
+				message = 'Error creating WebGL context.';
 
 			}
+
+			// Fail fast with a coded error. The previous `throw 'string'` was
+			// caught by the block below and only logged, so the renderer kept
+			// running with a null GL context and blew up much later with an
+			// unrelated TypeError from deep inside WebGLExtensions.
+			throw new THREE.ThreeError( message, THREE.ThreeError.CODES.CONTEXT_CREATION_FAILED );
 
 		}
 
@@ -182,7 +188,10 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 	} catch ( error ) {
 
-		console.error( 'THREE.WebGLRenderer: ' + error );
+		console.error( 'THREE.WebGLRenderer: ' + error.message );
+
+		// Never continue with a null context.
+		throw error;
 
 	}
 
@@ -312,7 +321,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 			return value;
 
-		}
+		};
 
 	} )();
 
@@ -818,7 +827,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		if ( index !== null ) {
 
-			dataCount = index.count
+			dataCount = index.count;
 
 		} else if ( position !== undefined ) {
 

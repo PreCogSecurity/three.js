@@ -185,7 +185,7 @@ THREE.ShapeUtils = {
 			if ( indices ) return vertIndices;
 			return result;
 
-		}
+		};
 
 	} )(),
 

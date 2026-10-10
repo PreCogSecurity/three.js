@@ -424,6 +424,24 @@ THREE.WebGLProgram = ( function () {
 		gl.deleteShader( glVertexShader );
 		gl.deleteShader( glFragmentShader );
 
+		// A program that failed to link is unusable: every draw call using it is
+		// silently dropped by the driver, which surfaces as a black screen with
+		// no actionable message. Fail fast with a coded, catchable error instead
+		// -- the full diagnostics remain available on `programCache.diagnostics`.
+		if ( runnable === false ) {
+
+			throw new THREE.ThreeError(
+				'THREE.WebGLProgram: program failed to link.',
+				THREE.ThreeError.CODES.PROGRAM_LINK_FAILED,
+				{
+					programLog: programLog,
+					vertexLog: vertexLog,
+					fragmentLog: fragmentLog
+				}
+			);
+
+		}
+
 		// set up caching for uniform locations
 
 		var cachedUniforms;

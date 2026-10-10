@@ -24,8 +24,11 @@ test( "Math.sign/polyfill", function() {
 	ok( isNaN( Math.sign(new THREE.Vector3()) ) , "If x is NaN<object>, the result is NaN.");
 	ok( isNaN( Math.sign() ) , "If x is NaN<undefined>, the result is NaN.");
 	ok( isNaN( Math.sign('--3') ) , "If x is NaN<'--3'>, the result is NaN.");
-	ok( Math.sign(-0) === -0 , "If x is -0, the result is -0.");
-	ok( Math.sign(+0) === +0 , "If x is +0, the result is +0.");
+	// `===` can never distinguish +0 from -0 (`0 === -0` is true), so these two
+	// assertions were vacuous: they passed no matter what `Math.sign` returned.
+	// `Object.is` is the IEEE-754 exact comparison the polyfill contract needs.
+	ok( Object.is( Math.sign(-0), -0 ) , "If x is -0, the result is -0.");
+	ok( Object.is( Math.sign(+0), +0 ) , "If x is +0, the result is +0.");
 	ok( Math.sign(-Infinity) === -1 , "If x is negative<-Infinity> and not -0, the result is -1.");
 	ok( Math.sign('-3') === -1 , "If x is negative<'-3'> and not -0, the result is -1.");
 	ok( Math.sign('-1e-10') === -1 , "If x is negative<'-1e-10'> and not -0, the result is -1.");

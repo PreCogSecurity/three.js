@@ -271,7 +271,7 @@ THREE.AnimationClip.parseAnimation = function( animation, bones, nodeName ) {
 
 			// track contains positions...
 			var positionTrack = convertTrack( boneName + '.position', animationKeys, 'pos', THREE.VectorKeyframeTrack, function( animationKey ) {
-					return new THREE.Vector3().fromArray( animationKey.pos )
+					return new THREE.Vector3().fromArray( animationKey.pos );
 				} );
 
 			if ( positionTrack ) tracks.push( positionTrack );
@@ -289,7 +289,7 @@ THREE.AnimationClip.parseAnimation = function( animation, bones, nodeName ) {
 
 			// track contains quaternions...
 			var scaleTrack = convertTrack( boneName + '.scale', animationKeys, 'scl', THREE.VectorKeyframeTrack, function( animationKey ) {
-					return new THREE.Vector3().fromArray( animationKey.scl )
+					return new THREE.Vector3().fromArray( animationKey.scl );
 				} );
 
 			if ( scaleTrack ) tracks.push( scaleTrack );

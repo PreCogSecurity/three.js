@@ -296,7 +296,7 @@ THREE.Quaternion.prototype = {
 
 			return this;
 
-		}
+		};
 
 	}(),
 
